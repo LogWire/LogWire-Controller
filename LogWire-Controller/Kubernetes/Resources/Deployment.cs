@@ -8,7 +8,7 @@ using k8s.Models;
 namespace LogWire.Controller.Kubernetes.Resources
 {
     
-    public class Deployment : IKubernetesResource
+    public class Deployment : KubernetesResource
     {
         private string _namespace;
         private string _name;
@@ -56,21 +56,21 @@ namespace LogWire.Controller.Kubernetes.Resources
         }
 
 
-        public async Task CreateResource(k8s.Kubernetes client)
+        public override async Task CreateResource(k8s.Kubernetes client)
         {
             if(!await ResourceExists(client))
                 await client.CreateNamespacedDeploymentAsync(GetDeploymentObject(), _namespace);
         }
 
-        public async Task DeleteResource(k8s.Kubernetes client)
+        public override async Task DeleteResource(k8s.Kubernetes client)
         {
             await client.DeleteNamespacedDeployment1Async(_name, _namespace);
         }
 
-        public async Task<bool> ResourceExists(k8s.Kubernetes client)
+        public override async Task<bool> ResourceExists(k8s.Kubernetes client)
         {
             var list = await client.ListNamespacedDeploymentAsync(_namespace);
-            return list.Items.Count(s => s.Metadata.Name.Equals(_name)) > 0;
+            return list.Items.Count(s => s.Metadata.Name.Equals(_name + "-deployment")) > 0;
         }
 
         public async Task<V1DeploymentStatus> GetStatus(k8s.Kubernetes client)

@@ -13,13 +13,16 @@ namespace LogWire.Controller.Kubernetes.Resources
         private string _name;
         private Dictionary<string, string> _selector;
         private List<V1ServicePort> _ports;
+        private bool _loadbalancer;
 
-        public Service(string ns, string name, Dictionary<string, string> selector, List<V1ServicePort> ports)
+        // Create a ClusterIP Service
+        public Service(string ns, string name, Dictionary<string, string> selector, List<V1ServicePort> ports, bool loadbalancer)
         {
             _name = name;
             _namespace = ns;
             _selector = selector;
             _ports = ports;
+            _loadbalancer = loadbalancer;
         }
 
         private V1Service GetServiceObject()
@@ -29,13 +32,13 @@ namespace LogWire.Controller.Kubernetes.Resources
                 Metadata = new V1ObjectMeta(namespaceProperty: _namespace, name: _name),
                 Spec = new V1ServiceSpec
                 {
+                    Type = _loadbalancer ? "LoadBalancer" : "",
                     Selector = _selector,
                     Ports = _ports
                 }
             };
         }
-
-
+        
         public async Task CreateResource(k8s.Kubernetes client)
         {
             if(!await ResourceExists(client))
@@ -50,7 +53,7 @@ namespace LogWire.Controller.Kubernetes.Resources
         public async Task<bool> ResourceExists(k8s.Kubernetes client)
         {
             var list = await client.ListNamespacedServiceAsync(_namespace);
-            return list.Items.Count(s => s.Metadata.Name.Equals(_name)) > 1;
+            return list.Items.Count(s => s.Metadata.Name.Equals(_name)) > 0;
         }
     }
 }

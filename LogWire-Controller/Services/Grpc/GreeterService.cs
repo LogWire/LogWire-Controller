@@ -3,7 +3,7 @@ using Grpc.Core;
 using LogWire_Controller;
 using Microsoft.Extensions.Logging;
 
-namespace LogWire.Controller.Services
+namespace LogWire.Controller.Services.Grpc
 {
     public class GreeterService : Greeter.GreeterBase
     {
