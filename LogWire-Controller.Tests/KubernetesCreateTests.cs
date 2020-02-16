@@ -159,6 +159,113 @@ namespace LogWire_Controller.Tests
 
         }
 
+        [TestMethod]
+        public async Task ConfigMapTest()
+        {
+
+            KubernetesClientConfiguration configuration = KubernetesClientConfiguration.BuildDefaultConfig();
+
+            var client = new k8s.Kubernetes(configuration);
+
+            Namespace n = new Namespace("test");
+
+            await n.CreateResource(client);
+
+            ConfigMap map = new ConfigMap("test", "test-map", new Dictionary<string, string>
+            {
+                { "rabbitmq.conf", "test=test1\r\ntest2=test2" }
+            });
+
+            await map.CreateResource(client);
+
+            Assert.AreEqual(true, await map.ResourceExists(client));
+
+        }
+
+        [TestMethod]
+        public async Task RoleTest()
+        {
+
+            KubernetesClientConfiguration configuration = KubernetesClientConfiguration.BuildDefaultConfig();
+
+            var client = new k8s.Kubernetes(configuration);
+
+            Namespace n = new Namespace("test");
+
+            await n.CreateResource(client);
+
+
+            V1PolicyRule rolePolicy = new V1PolicyRule
+            {
+                Resources = new List<string> { "resources" },
+                Verbs = new List<string> { "get" },
+                ApiGroups = new List<string> { "" }
+            };
+
+            Role r = new Role("test", "test-role", new List<V1PolicyRule> { rolePolicy });
+
+            await r.CreateResource(client);
+
+            Assert.AreEqual(true, await r.ResourceExists(client));
+
+        }
+
+        [TestMethod]
+        public async Task ServiceAccountTest()
+        {
+
+            KubernetesClientConfiguration configuration = KubernetesClientConfiguration.BuildDefaultConfig();
+
+            var client = new k8s.Kubernetes(configuration);
+
+            Namespace n = new Namespace("test");
+
+            await n.CreateResource(client);
+
+            ServiceAccount sa = new ServiceAccount("test", "test-account");
+
+            await sa.CreateResource(client);
+
+            Assert.AreEqual(true, await sa.ResourceExists(client));
+
+        }
+
+        [TestMethod]
+        public async Task RoleBindingTest()
+        {
+
+            KubernetesClientConfiguration configuration = KubernetesClientConfiguration.BuildDefaultConfig();
+
+            var client = new k8s.Kubernetes(configuration);
+
+            Namespace n = new Namespace("test");
+
+            await n.CreateResource(client);
+
+            ServiceAccount sa = new ServiceAccount("test", "test-account");
+
+            await sa.CreateResource(client);
+
+            V1PolicyRule rolePolicy = new V1PolicyRule
+            {
+                Resources = new List<string> { "resources" },
+                Verbs = new List<string> { "get" },
+                ApiGroups = new List<string> { "" }
+            };
+
+            Role r = new Role("test", "test-role", new List<V1PolicyRule> { rolePolicy });
+
+            await r.CreateResource(client);
+
+            RoleBinding rb = new RoleBinding("test", "testrb", 
+                new List<V1Subject> {new V1Subject("ServiceAccount", "test-account")},
+                "rbac.authorization.k8s.io", "Role", "test-role");
+
+            await rb.CreateResource(client);
+
+            Assert.AreEqual(true, await rb.ResourceExists(client));
+        }
+
     }
 
 }

@@ -10,13 +10,12 @@ namespace LogWire.Controller.Kubernetes.Resources
     
     public class Deployment : KubernetesResource
     {
-        private string _namespace;
-        private string _name;
-        private Dictionary<string, string> _labels;
-        private int _replicas;
-        private Dictionary<string, string> _selectors;
-        private string _image;
-        private List<V1ContainerPort> _ports;
+
+        private readonly Dictionary<string, string> _labels;
+        private readonly int _replicas;
+        private readonly Dictionary<string, string> _selectors;
+        private readonly string _image;
+        private readonly List<V1ContainerPort> _ports;
 
         public Deployment (string ns, string name, Dictionary<string, string> labels, int replicas, Dictionary<string,string> selector, string image, List<V1ContainerPort> ports)
         {

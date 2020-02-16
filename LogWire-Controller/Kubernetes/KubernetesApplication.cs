@@ -8,7 +8,7 @@ namespace LogWire.Controller.Kubernetes
     public abstract class KubernetesApplication
     {
 
-
+        public abstract void CreateResources(k8s.Kubernetes client);
 
     }
 }

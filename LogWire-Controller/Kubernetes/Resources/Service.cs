@@ -7,13 +7,12 @@ using k8s.Models;
 
 namespace LogWire.Controller.Kubernetes.Resources
 {
-    public class Service : IKubernetesResource
+    public class Service : KubernetesResource
     {
-        private string _namespace;
-        private string _name;
-        private Dictionary<string, string> _selector;
-        private List<V1ServicePort> _ports;
-        private bool _loadbalancer;
+
+        private readonly Dictionary<string, string> _selector;
+        private readonly List<V1ServicePort> _ports;
+        private readonly bool _loadbalancer;
 
         // Create a ClusterIP Service
         public Service(string ns, string name, Dictionary<string, string> selector, List<V1ServicePort> ports, bool loadbalancer)
@@ -39,18 +38,18 @@ namespace LogWire.Controller.Kubernetes.Resources
             };
         }
         
-        public async Task CreateResource(k8s.Kubernetes client)
+        public override async Task CreateResource(k8s.Kubernetes client)
         {
             if(!await ResourceExists(client))
                 client.CreateNamespacedService(GetServiceObject(), _namespace);
         }
 
-        public async Task DeleteResource(k8s.Kubernetes client)
+        public override async Task DeleteResource(k8s.Kubernetes client)
         {
             await client.DeleteNamespacedServiceAsync(_name, _namespace);
         }
 
-        public async Task<bool> ResourceExists(k8s.Kubernetes client)
+        public override async Task<bool> ResourceExists(k8s.Kubernetes client)
         {
             var list = await client.ListNamespacedServiceAsync(_namespace);
             return list.Items.Count(s => s.Metadata.Name.Equals(_name)) > 0;

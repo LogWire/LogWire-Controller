@@ -7,9 +7,8 @@ using k8s.Models;
 
 namespace LogWire.Controller.Kubernetes.Resources
 {
-    public class Namespace : IKubernetesResource
+    public class Namespace : KubernetesResource
     {
-        private string _name;
 
         public Namespace(string name)
         {
@@ -27,7 +26,7 @@ namespace LogWire.Controller.Kubernetes.Resources
             };
         }
 
-        public async Task CreateResource(k8s.Kubernetes client)
+        public override async Task CreateResource(k8s.Kubernetes client)
         {
             if (!await ResourceExists(client))
             {
@@ -35,12 +34,12 @@ namespace LogWire.Controller.Kubernetes.Resources
             }
         }
 
-        public async Task DeleteResource(k8s.Kubernetes client)
+        public override async Task DeleteResource(k8s.Kubernetes client)
         {
             await client.DeleteNamespaceAsync(_name);
         }
 
-        public async Task<bool> ResourceExists(k8s.Kubernetes client)
+        public override async Task<bool> ResourceExists(k8s.Kubernetes client)
         {
             await Task.Delay(1);
 

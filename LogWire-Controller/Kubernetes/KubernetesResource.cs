@@ -7,6 +7,8 @@ namespace LogWire.Controller.Kubernetes
 {
     public abstract class KubernetesResource
     {
+        protected string _namespace;
+        protected string _name;
 
         public abstract Task CreateResource(k8s.Kubernetes client);
 
