@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using k8s;
@@ -13,15 +12,20 @@ namespace LogWire.Controller.Kubernetes.Resources
         private readonly Dictionary<string, string> _selector;
         private readonly List<V1ServicePort> _ports;
         private readonly bool _loadbalancer;
+        private readonly string _clusterIP;
+        private bool? _publishNotReady;
 
         // Create a ClusterIP Service
-        public Service(string ns, string name, Dictionary<string, string> selector, List<V1ServicePort> ports, bool loadbalancer)
+        
+        public Service(string ns, string name, Dictionary<string, string> selector, List<V1ServicePort> ports, bool? publishNotReady = null, bool loadbalancer = false, string clusterIP = null)
         {
             _name = name;
             _namespace = ns;
             _selector = selector;
             _ports = ports;
+            _publishNotReady = publishNotReady;
             _loadbalancer = loadbalancer;
+            _clusterIP = clusterIP;
         }
 
         private V1Service GetServiceObject()
@@ -33,7 +37,9 @@ namespace LogWire.Controller.Kubernetes.Resources
                 {
                     Type = _loadbalancer ? "LoadBalancer" : "",
                     Selector = _selector,
-                    Ports = _ports
+                    Ports = _ports,
+                    ClusterIP = _clusterIP,
+                    PublishNotReadyAddresses = _publishNotReady
                 }
             };
         }

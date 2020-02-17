@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using k8s;
@@ -16,11 +15,13 @@ namespace LogWire.Controller.Kubernetes.Resources
         private readonly string _updateStratType;
         private readonly IDictionary<string, string> _selector;
         private readonly V1PodTemplateSpec _template;
+        private IDictionary<string, string> _labels;
 
-        public StatefulSet(string ns, string name, string serviceName, string podManagementPolicy, int? replicas, string updateStratType, IDictionary<string, string> selector, V1PodTemplateSpec template, IList<V1PersistentVolumeClaim> volumeTemplate)
+        public StatefulSet(string ns, string name, IDictionary<string, string> labels, string serviceName, string podManagementPolicy, int? replicas, string updateStratType, IDictionary<string, string> selector, V1PodTemplateSpec template, IList<V1PersistentVolumeClaim> volumeTemplate)
         {
             _namespace = ns;
             _name = name;
+            _labels = labels;
             _serviceName = serviceName;
             _podManagementPolicy = podManagementPolicy;
             _replicas = replicas;
@@ -34,7 +35,7 @@ namespace LogWire.Controller.Kubernetes.Resources
         {
             return new V1StatefulSet
             {
-                Metadata = new V1ObjectMeta(namespaceProperty:_namespace, name:_name),
+                Metadata = new V1ObjectMeta(namespaceProperty:_namespace, name:_name, labels: _labels),
                 Spec = new V1StatefulSetSpec
                 {
                     ServiceName = _serviceName,

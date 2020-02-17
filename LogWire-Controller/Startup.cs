@@ -1,5 +1,4 @@
-﻿using LogWire.Controller.Services;
-using LogWire.Controller.Services.Grpc;
+﻿using LogWire.Controller.Services.Grpc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using k8s;
 using k8s.Models;
@@ -9,18 +7,20 @@ namespace LogWire.Controller.Kubernetes.Resources
 {
     public class ServiceAccount : KubernetesResource
     {
+        private readonly bool? _automatedToken;
 
-        public ServiceAccount(string ns, string name)
+        public ServiceAccount(string ns, string name, bool? automatedToken = null)
         {
             _namespace = ns;
             _name = name;
+            _automatedToken = automatedToken;
         }
 
         private V1ServiceAccount GetServiceAccountObject()
         {
             return new V1ServiceAccount {
                 Metadata = new V1ObjectMeta(namespaceProperty: _namespace, name: _name),
-                
+                AutomountServiceAccountToken = _automatedToken
             };
         }
 

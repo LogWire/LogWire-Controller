@@ -1,14 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace LogWire.Controller.Kubernetes
 {
+
     public abstract class KubernetesApplication
     {
+        protected KubernetesApplication()
+        {
 
-        public abstract void CreateResources(k8s.Kubernetes client);
+            ConstructResources();
+
+        }
+
+        protected abstract void ConstructResources();
+
+        public abstract Task CreateResources(k8s.Kubernetes client);
 
     }
 }

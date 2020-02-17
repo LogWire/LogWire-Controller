@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using k8s;
 using k8s.Models;
+using LogWire.Controller.Kubernetes.Applications;
 using LogWire.Controller.Kubernetes.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -264,6 +265,20 @@ namespace LogWire_Controller.Tests
             await rb.CreateResource(client);
 
             Assert.AreEqual(true, await rb.ResourceExists(client));
+        }
+
+        [TestMethod]
+        public async Task ApplicationRabbitMQTest()
+        {
+
+            KubernetesClientConfiguration configuration = KubernetesClientConfiguration.BuildDefaultConfig();
+
+            var client = new k8s.Kubernetes(configuration);
+
+            RabbitMQApplication rabbit = new RabbitMQApplication();
+
+            await rabbit.CreateResources(client);
+
         }
 
     }
