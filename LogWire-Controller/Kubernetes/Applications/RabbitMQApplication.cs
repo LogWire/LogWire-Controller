@@ -10,6 +10,7 @@ using Secret = LogWire.Controller.Kubernetes.Resources.Secret;
 
 namespace LogWire.Controller.Kubernetes.Applications
 {
+    // ReSharper disable once InconsistentNaming
     public class RabbitMQApplication : KubernetesApplication
     {
 
@@ -17,31 +18,19 @@ namespace LogWire.Controller.Kubernetes.Applications
         private static string _rabbitManagerPass = "y8Qa10wqJ6iDB6XcTh0DQI8F";
         private static string _rabbitGuestPass = "0naJ1k2PG3TL1IUBUzBxVah8";
 
-        private static string _namespace = "rabbit-mq";
-
-
+        protected override string Namespace => "rabbit-mq";
+        
         private static Dictionary<string, string> _labels = new Dictionary<string, string> { { "app", "rabbitmq" } };
         private static List<V1ServicePort> _ports = new List<V1ServicePort> {
             new V1ServicePort(15672, "http", targetPort: "http"),
             new V1ServicePort(5672, "amqp", targetPort: "amqp"),
             new V1ServicePort(4369, "epmd", targetPort: "epmd")
         };
-
-        private Namespace _ns;
-        private ConfigMap _configMap;
-        private Secret _secret;
-        private ServiceAccount _serviceAccount;
-        private Role _role;
-        private RoleBinding _roleBinding;
-        private Service _discoveryService;
-        private Service _service;
-        private StatefulSet _statefulSet;
-
-
+        
         protected override void ConstructResources()
         {
 
-            _ns = new Namespace(_namespace);
+            ApplicationResources.Add(new Namespace(this.Namespace));
 
             ConstructConfigMap();
             ConstructSecret();
@@ -56,13 +45,13 @@ namespace LogWire.Controller.Kubernetes.Applications
 
         private void ConstructService()
         {
-            _service = new Service(_namespace, "rabbitmq", _labels, _ports);   
+            ApplicationResources.Add(new Service(this.Namespace, "rabbitmq", _labels, _ports));   
         }
 
         private void ConstructStatefulSet()
         {
             V1PodTemplateSpec podSpec = new V1PodTemplateSpec{
-                Metadata = new V1ObjectMeta(namespaceProperty:_namespace, labels:_labels),
+                Metadata = new V1ObjectMeta(namespaceProperty:this.Namespace, labels:_labels),
                 Spec = new V1PodSpec
                 {
                     TerminationGracePeriodSeconds = 10,
@@ -81,7 +70,7 @@ namespace LogWire.Controller.Kubernetes.Applications
                             {
                                 new V1EnvVar("POD_NAME", valueFrom: new V1EnvVarSource(fieldRef: new V1ObjectFieldSelector("metadata.name"))),
                                 new V1EnvVar("RABBITMQ_ERLANG_COOKIE", valueFrom:new V1EnvVarSource(secretKeyRef: new V1SecretKeySelector("rabbitmq-erlang-cookie", "rabbitmq"))),
-                                new V1EnvVar("RABBITMQ_MNESIA_DIR", "/var/lib/rabbitmq/mnesia/rabbit@$(POD_NAME).rabbitmq-discovery." + _namespace + ".svc.cluster.local")
+                                new V1EnvVar("RABBITMQ_MNESIA_DIR", "/var/lib/rabbitmq/mnesia/rabbit@$(POD_NAME).rabbitmq-discovery." + this.Namespace + ".svc.cluster.local")
                             },
                             VolumeMounts = new List<V1VolumeMount>
                             {
@@ -125,9 +114,9 @@ namespace LogWire.Controller.Kubernetes.Applications
                                 new V1EnvVar("K8S_SERVICE_NAME", "rabbitmq-discovery"),
                                 new V1EnvVar("RABBITMQ_USE_LONGNAME","true"),
                                 new V1EnvVar("MY_POD_NAME", valueFrom: new V1EnvVarSource(fieldRef: new V1ObjectFieldSelector("metadata.name"))),
-                                new V1EnvVar("MY_POD_NAMESPACE", valueFrom: new V1EnvVarSource(fieldRef: new V1ObjectFieldSelector("metadata.namespace"))),
-                                new V1EnvVar("RABBITMQ_NODENAME", "rabbit@$(MY_POD_NAME).$(K8S_SERVICE_NAME).$(MY_POD_NAMESPACE).svc.cluster.local"),
-                                new V1EnvVar("K8S_HOSTNAME_SUFFIX", ".$(K8S_SERVICE_NAME).$(MY_POD_NAMESPACE).svc.cluster.local"),
+                                new V1EnvVar("MY_PODthis.Namespace", valueFrom: new V1EnvVarSource(fieldRef: new V1ObjectFieldSelector("metadata.namespace"))),
+                                new V1EnvVar("RABBITMQ_NODENAME", "rabbit@$(MY_POD_NAME).$(K8S_SERVICE_NAME).$(MY_PODthis.Namespace).svc.cluster.local"),
+                                new V1EnvVar("K8S_HOSTNAME_SUFFIX", ".$(K8S_SERVICE_NAME).$(MY_PODthis.Namespace).svc.cluster.local"),
                                 new V1EnvVar("RABBITMQ_ERLANG_COOKIE", valueFrom:new V1EnvVarSource(secretKeyRef:new V1SecretKeySelector("rabbitmq-erlang-cookie", "rabbitmq"))),
                                 new V1EnvVar("RABBIT_MANAGEMENT_USER", valueFrom:new V1EnvVarSource(secretKeyRef:new V1SecretKeySelector("rabbitmq-management-username", "rabbitmq"))),
                                 new V1EnvVar("RABBIT_MANAGEMENT_PASSWORD", valueFrom:new V1EnvVarSource(secretKeyRef:new V1SecretKeySelector("rabbitmq-management-password", "rabbitmq")))
@@ -160,23 +149,23 @@ namespace LogWire.Controller.Kubernetes.Applications
 
             };
 
-            _statefulSet = new StatefulSet(_namespace, "rabbitmq", _labels, "rabbitmq-discovery",
-                "OrderedReady", 3, "OnDelete", _labels, podSpec, volumeTemplate);
+            ApplicationResources.Add(new StatefulSet(this.Namespace, "rabbitmq", _labels, "rabbitmq-discovery",
+                "OrderedReady", 3, "OnDelete", _labels, podSpec, volumeTemplate));
         }
 
         private void ConstructDiscoveryService()
         {
-            _discoveryService = new Service(_namespace, "rabbitmq-discovery", _labels, _ports, true, clusterIP: "None");
+            ApplicationResources.Add(new Service(this.Namespace, "rabbitmq-discovery", _labels, _ports, true, clusterIP: "None"));
         }
 
         private void ConstructRoleBinding()
         {
             IList<V1Subject> subjects = new List<V1Subject>
             {
-                new V1Subject("ServiceAccount", "rabbitmq", namespaceProperty: _namespace)
+                new V1Subject("ServiceAccount", "rabbitmq", namespaceProperty: this.Namespace)
             };
 
-            _roleBinding = new RoleBinding(_namespace, "rabbitmq", subjects, "rbac.authorization.k8s.io", "Role", "rabbitmq");
+            ApplicationResources.Add(new RoleBinding(this.Namespace, "rabbitmq", subjects, "rbac.authorization.k8s.io", "Role", "rabbitmq"));
         }
 
         private void ConstructRole()
@@ -187,12 +176,12 @@ namespace LogWire.Controller.Kubernetes.Applications
                 Resources = new List<string> { "endpoints" }
             };
 
-            _role = new Role(_namespace, "rabbitmq", new List<V1PolicyRule>{policy});
+            ApplicationResources.Add(new Role(this.Namespace, "rabbitmq", new List<V1PolicyRule>{policy}));
         }
 
         private void ConstructServiceAccount()
         {
-            _serviceAccount = new ServiceAccount(_namespace, "rabbitmq", true);
+            ApplicationResources.Add(new ServiceAccount(this.Namespace, "rabbitmq", true));
         }
 
         private void ConstructSecret()
@@ -206,7 +195,7 @@ namespace LogWire.Controller.Kubernetes.Applications
             secret.Add("rabbitmq-erlang-cookie", "8gmpHBke9cWwz6AFt9XfD41SDxl6yMu2");
             secret.Add("definitions.json", @"{""global_parameters"":[],""users"":[{""name"":""management"",""password"":""" + _rabbitManagerPass + @""",""tags"":""management""},{""name"":""guest"",""password"":""" + _rabbitGuestPass + @""",""tags"":""administrator""}],""vhosts"":[{""name"":""/""}],""permissions"":[{""user"":""guest"",""vhost"":""/"",""configure"":"".*"",""read"":"".*"",""write"":"".*""}],""parameters"":[],""policies"":[],""queues"":[],""exchanges"":[],""bindings"":[]}");
             
-            _secret = new Secret(_namespace, "rabbitmq", secret);
+            ApplicationResources.Add(new Secret(this.Namespace, "rabbitmq", secret));
         }
 
         private void ConstructConfigMap()
@@ -224,22 +213,8 @@ namespace LogWire.Controller.Kubernetes.Applications
                                         management.load_definitions = /etc/definitions/definitions.json
                                         vm_memory_high_watermark.absolute = 256MB");
 
-            _configMap = new ConfigMap(_namespace, "rabbitmq", data);
+            ApplicationResources.Add(new ConfigMap(this.Namespace, "rabbitmq", data));
         }
 
-        public override async Task CreateResources(k8s.Kubernetes client)
-        {
-
-            await _ns.CreateResource(client);
-            await _configMap.CreateResource(client);
-            await _secret.CreateResource(client);
-            await _serviceAccount.CreateResource(client);
-            await _role.CreateResource(client);
-            await _roleBinding.CreateResource(client);
-            await _discoveryService.CreateResource(client);
-            await _service.CreateResource(client);
-            await _statefulSet.CreateResource(client);
-
-        }
     }
 }

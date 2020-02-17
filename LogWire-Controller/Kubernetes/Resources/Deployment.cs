@@ -52,8 +52,7 @@ namespace LogWire.Controller.Kubernetes.Resources
                 }
             };
         }
-
-
+        
         public override async Task CreateResource(k8s.Kubernetes client)
         {
             if(!await ResourceExists(client))
@@ -78,5 +77,19 @@ namespace LogWire.Controller.Kubernetes.Resources
 
             return deployment?.Status;
         }
+
+        public override async Task<bool> ResourceReady(k8s.Kubernetes client)
+        {
+
+            if (!await ResourceExists(client))
+                return false;
+
+            var list = await client.ListNamespacedDeploymentAsync(_namespace);
+            var deployment = list.Items.FirstOrDefault(s => s.Metadata.Name.Equals(_name));
+
+            return deployment?.Status.ReadyReplicas == _replicas;
+
+        }
+
     }
 }

@@ -65,5 +65,18 @@ namespace LogWire.Controller.Kubernetes.Resources
             var list = await client.ListNamespacedStatefulSetAsync(_namespace);
             return list.Items.Count(s => s.Metadata.Name.Equals(_name)) > 0;
         }
+
+        public override async Task<bool> ResourceReady(k8s.Kubernetes client)
+        {
+
+            if (!await ResourceExists(client))
+                return false;
+
+            var list = await client.ListNamespacedStatefulSetAsync(_namespace);
+            var statefulSet = list.Items.FirstOrDefault(s => s.Metadata.Name.Equals(_name));
+
+            return statefulSet?.Status.ReadyReplicas == _replicas;
+
+        }
     }
 }

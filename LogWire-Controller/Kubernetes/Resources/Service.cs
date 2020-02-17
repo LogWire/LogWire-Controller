@@ -17,7 +17,8 @@ namespace LogWire.Controller.Kubernetes.Resources
 
         // Create a ClusterIP Service
         
-        public Service(string ns, string name, Dictionary<string, string> selector, List<V1ServicePort> ports, bool? publishNotReady = null, bool loadbalancer = false, string clusterIP = null)
+        public 
+            Service(string ns, string name, Dictionary<string, string> selector, List<V1ServicePort> ports, bool? publishNotReady = null, bool loadbalancer = false, string clusterIP = null)
         {
             _name = name;
             _namespace = ns;

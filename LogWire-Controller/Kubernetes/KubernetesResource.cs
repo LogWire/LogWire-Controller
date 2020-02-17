@@ -13,5 +13,10 @@ namespace LogWire.Controller.Kubernetes
 
         public abstract Task<bool> ResourceExists(k8s.Kubernetes client);
 
+        public virtual async Task<bool> ResourceReady(k8s.Kubernetes client)
+        {
+            return await ResourceExists(client);
+        }
+
     }
 }

@@ -174,7 +174,7 @@ namespace LogWire_Controller.Tests
 
             ConfigMap map = new ConfigMap("test", "test-map", new Dictionary<string, string>
             {
-                { "rabbitmq.conf", "test=test1\r\ntest2=test2" }
+                {"rabbitmq.conf", "test=test1\r\ntest2=test2"}
             });
 
             await map.CreateResource(client);
@@ -198,12 +198,12 @@ namespace LogWire_Controller.Tests
 
             V1PolicyRule rolePolicy = new V1PolicyRule
             {
-                Resources = new List<string> { "resources" },
-                Verbs = new List<string> { "get" },
-                ApiGroups = new List<string> { "" }
+                Resources = new List<string> {"resources"},
+                Verbs = new List<string> {"get"},
+                ApiGroups = new List<string> {""}
             };
 
-            Role r = new Role("test", "test-role", new List<V1PolicyRule> { rolePolicy });
+            Role r = new Role("test", "test-role", new List<V1PolicyRule> {rolePolicy});
 
             await r.CreateResource(client);
 
@@ -249,36 +249,22 @@ namespace LogWire_Controller.Tests
 
             V1PolicyRule rolePolicy = new V1PolicyRule
             {
-                Resources = new List<string> { "resources" },
-                Verbs = new List<string> { "get" },
-                ApiGroups = new List<string> { "" }
+                Resources = new List<string> {"resources"},
+                Verbs = new List<string> {"get"},
+                ApiGroups = new List<string> {""}
             };
 
-            Role r = new Role("test", "test-role", new List<V1PolicyRule> { rolePolicy });
+            Role r = new Role("test", "test-role", new List<V1PolicyRule> {rolePolicy});
 
             await r.CreateResource(client);
 
-            RoleBinding rb = new RoleBinding("test", "testrb", 
+            RoleBinding rb = new RoleBinding("test", "testrb",
                 new List<V1Subject> {new V1Subject("ServiceAccount", "test-account")},
                 "rbac.authorization.k8s.io", "Role", "test-role");
 
             await rb.CreateResource(client);
 
             Assert.AreEqual(true, await rb.ResourceExists(client));
-        }
-
-        [TestMethod]
-        public async Task ApplicationRabbitMQTest()
-        {
-
-            KubernetesClientConfiguration configuration = KubernetesClientConfiguration.BuildDefaultConfig();
-
-            var client = new k8s.Kubernetes(configuration);
-
-            RabbitMQApplication rabbit = new RabbitMQApplication();
-
-            await rabbit.CreateResources(client);
-
         }
 
     }
