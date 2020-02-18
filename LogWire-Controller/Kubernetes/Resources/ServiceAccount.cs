@@ -11,8 +11,8 @@ namespace LogWire.Controller.Kubernetes.Resources
 
         public ServiceAccount(string ns, string name, bool? automatedToken = null)
         {
-            _namespace = ns;
-            _name = name;
+            _namespace = ns.ToLower();
+            _name = name.ToLower();
             _automatedToken = automatedToken;
         }
 

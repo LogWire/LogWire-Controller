@@ -15,8 +15,8 @@ namespace LogWire.Controller.Kubernetes.Resources
 
         public RoleBinding(string ns, string name, IList<V1Subject> subjects, string apiGroup, string kind, string roleName)
         {
-            _name = name;
-            _namespace = ns;
+            _name = name.ToLower();
+            _namespace = ns.ToLower();
             _subjects = subjects;
             _apiGroup = apiGroup;
             _kind = kind;

@@ -10,20 +10,20 @@ namespace LogWire.Controller.Services.Hosted
     {
         private KubernetesManager _manager;
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             
             _manager = KubernetesManager.Instance;
 
-            _manager.Startup();
+            await _manager.Startup();
 
-            return Task.CompletedTask;
 
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

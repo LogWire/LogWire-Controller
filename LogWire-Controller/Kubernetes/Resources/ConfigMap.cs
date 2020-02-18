@@ -12,7 +12,7 @@ namespace LogWire.Controller.Kubernetes.Resources
 
         public ConfigMap(string ns, string name, IDictionary<string, string> data)
         {
-            _namespace = ns;
+            _namespace = ns.ToLower();
             _name = name.ToLower();
             _data = data;
         }

@@ -13,8 +13,8 @@ namespace LogWire.Controller.Kubernetes.Resources
 
         public Ingress(string ns, string name, IList<Extensionsv1beta1IngressRule> rules)
         {
-            _namespace = ns;
-            _name = name;
+            _namespace = ns.ToLower();
+            _name = name.ToLower();
             _rules = rules;
         }
 

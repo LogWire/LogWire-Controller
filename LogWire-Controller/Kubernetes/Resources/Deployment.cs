@@ -18,8 +18,8 @@ namespace LogWire.Controller.Kubernetes.Resources
 
         public Deployment (string ns, string name, Dictionary<string, string> labels, int replicas, Dictionary<string,string> selector, string image, List<V1ContainerPort> ports)
         {
-            _namespace = ns;
-            _name = name;
+            _namespace = ns.ToLower();
+            _name = name.ToLower();
             _labels = labels;
             _replicas = replicas;
             _selectors = selector;

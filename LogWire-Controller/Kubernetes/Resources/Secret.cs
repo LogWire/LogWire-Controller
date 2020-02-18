@@ -12,8 +12,8 @@ namespace LogWire.Controller.Kubernetes.Resources
 
         public Secret(string ns, string name, Dictionary<string, string> data)
         {
-            _namespace = ns;
-            _name = name;
+            _namespace = ns.ToLower();
+            _name = name.ToLower();
             _data = data;
         }
 

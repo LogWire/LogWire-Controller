@@ -12,8 +12,8 @@ namespace LogWire.Controller.Kubernetes.Resources
 
         public Role(string ns, string name, IList<V1PolicyRule> rules)
         {
-            _name = name;
-            _namespace = ns;
+            _name = name.ToLower();
+            _namespace = ns.ToLower();
             _rules = rules;
         }
 

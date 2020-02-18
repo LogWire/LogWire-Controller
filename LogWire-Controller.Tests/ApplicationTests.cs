@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using k8s;
 using LogWire.Controller.Kubernetes.Applications;
@@ -52,6 +53,39 @@ namespace LogWire_Controller.Tests
             RabbitMQApplication rabbit = new RabbitMQApplication();
 
             await rabbit.Delete(client);
+
+        }
+
+        [TestMethod]
+        public async Task ElasticsearchCreateTest()
+        {
+
+            KubernetesClientConfiguration configuration = KubernetesClientConfiguration.BuildDefaultConfig();
+
+            var client = new k8s.Kubernetes(configuration);
+
+            ElasticSearchApplication elasticsearch = new ElasticSearchApplication();
+
+            await elasticsearch.Create(client);
+
+            while (!await elasticsearch.IsReady(client))
+            {
+                Thread.Sleep(500);
+            }
+
+        }
+
+        [TestMethod]
+        public async Task ElasticsearchDeleteTest()
+        {
+
+            KubernetesClientConfiguration configuration = KubernetesClientConfiguration.BuildDefaultConfig();
+
+            var client = new k8s.Kubernetes(configuration);
+
+            ElasticSearchApplication elasticsearch = new ElasticSearchApplication();
+
+            await elasticsearch.Delete(client);
 
         }
 

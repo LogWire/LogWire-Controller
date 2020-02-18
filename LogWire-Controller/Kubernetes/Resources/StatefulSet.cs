@@ -19,8 +19,8 @@ namespace LogWire.Controller.Kubernetes.Resources
 
         public StatefulSet(string ns, string name, IDictionary<string, string> labels, string serviceName, string podManagementPolicy, int? replicas, string updateStratType, IDictionary<string, string> selector, V1PodTemplateSpec template, IList<V1PersistentVolumeClaim> volumeTemplate)
         {
-            _namespace = ns;
-            _name = name;
+            _namespace = ns.ToLower();
+            _name = name.ToLower();
             _labels = labels;
             _serviceName = serviceName;
             _podManagementPolicy = podManagementPolicy;

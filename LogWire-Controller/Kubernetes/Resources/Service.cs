@@ -20,8 +20,8 @@ namespace LogWire.Controller.Kubernetes.Resources
         public 
             Service(string ns, string name, Dictionary<string, string> selector, List<V1ServicePort> ports, bool? publishNotReady = null, bool loadbalancer = false, string clusterIP = null)
         {
-            _name = name;
-            _namespace = ns;
+            _name = name.ToLower();
+            _namespace = ns.ToLower();
             _selector = selector;
             _ports = ports;
             _publishNotReady = publishNotReady;

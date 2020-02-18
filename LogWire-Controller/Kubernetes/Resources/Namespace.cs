@@ -10,7 +10,7 @@ namespace LogWire.Controller.Kubernetes.Resources
 
         public Namespace(string name)
         {
-            _name = name;
+            _name = name.ToLower();
         }
 
         private V1Namespace GetNamespaceObject()
