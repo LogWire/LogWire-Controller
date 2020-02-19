@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using k8s.Models;
+using LogWire.Controller.Data.Model;
+using LogWire.Controller.Data.Repository;
 using LogWire.Controller.Kubernetes.Applications.Utils.Commands;
 using LogWire.Controller.Kubernetes.Resources;
 
@@ -29,14 +31,6 @@ namespace LogWire.Controller.Kubernetes.Applications
         private int _ramLimit = 1;
 
         protected override string Namespace => "elasticsearch";
-
-        protected override void ConstructResources()
-        {
-            ConstructPodDisruptionBudget();
-            ConstructService();
-            ConstructHeadlessService();
-            ConstructStatefulSet();
-        }
 
         private void ConstructStatefulSet()
         {
@@ -170,5 +164,23 @@ namespace LogWire.Controller.Kubernetes.Applications
             ApplicationResources.Add(new PodDisruptionBudget(Namespace, "elasticsearch-pdb", 1, new V1LabelSelector(matchLabels: _labels)));
         }
 
+        public ElasticSearchApplication(IDataRepository<ConfigurationEntry> repository) : base(repository)
+        {
+            ConstructResources();
+        }
+
+        // Test Only
+        public ElasticSearchApplication()
+        {
+            ConstructResources();
+        }
+
+        private void ConstructResources()
+        {
+            ConstructPodDisruptionBudget();
+            ConstructService();
+            ConstructHeadlessService();
+            ConstructStatefulSet();
+        }
     }
 }

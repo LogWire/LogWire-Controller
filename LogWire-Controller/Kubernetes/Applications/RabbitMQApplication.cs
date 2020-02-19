@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using k8s.Models;
+using LogWire.Controller.Data.Model;
+using LogWire.Controller.Data.Repository;
 using LogWire.Controller.Kubernetes.Applications.Utils.Commands;
 using LogWire.Controller.Kubernetes.Resources;
 using LogWire.Controller.Utils;
@@ -15,8 +17,9 @@ namespace LogWire.Controller.Kubernetes.Applications
     {
 
         // User Editable Information
-        private static string _rabbitManagerPass = "y8Qa10wqJ6iDB6XcTh0DQI8F";
-        private static string _rabbitGuestPass = "0naJ1k2PG3TL1IUBUzBxVah8";
+        private static string _rabbitManagerPass;
+        private static string _rabbitGuestPass;
+        private static string _cookie;
 
         protected override string Namespace => "rabbit-mq";
         
@@ -26,22 +29,6 @@ namespace LogWire.Controller.Kubernetes.Applications
             new V1ServicePort(5672, "amqp", targetPort: "amqp"),
             new V1ServicePort(4369, "epmd", targetPort: "epmd")
         };
-        
-        protected override void ConstructResources()
-        {
-
-            ApplicationResources.Add(new Namespace(this.Namespace));
-
-            ConstructConfigMap();
-            ConstructSecret();
-            ConstructServiceAccount();
-            ConstructRole();
-            ConstructRoleBinding();
-            ConstructDiscoveryService();
-            ConstructService();
-            ConstructStatefulSet();
-
-        }
 
         private void ConstructService()
         {
@@ -192,7 +179,7 @@ namespace LogWire.Controller.Kubernetes.Applications
             secret.Add("rabbitmq-password", _rabbitGuestPass); // 0naJ1k2PG3TL1IUBUzBxVah8
             secret.Add("rabbitmq-management-username", "management"); // management
             secret.Add("rabbitmq-management-password", _rabbitManagerPass); // y8Qa10wqJ6iDB6XcTh0DQI8F
-            secret.Add("rabbitmq-erlang-cookie", "8gmpHBke9cWwz6AFt9XfD41SDxl6yMu2");
+            secret.Add("rabbitmq-erlang-cookie", _cookie);
             secret.Add("definitions.json", @"{""global_parameters"":[],""users"":[{""name"":""management"",""password"":""" + _rabbitManagerPass + @""",""tags"":""management""},{""name"":""guest"",""password"":""" + _rabbitGuestPass + @""",""tags"":""administrator""}],""vhosts"":[{""name"":""/""}],""permissions"":[{""user"":""guest"",""vhost"":""/"",""configure"":"".*"",""read"":"".*"",""write"":"".*""}],""parameters"":[],""policies"":[],""queues"":[],""exchanges"":[],""bindings"":[]}");
             
             ApplicationResources.Add(new Secret(this.Namespace, "rabbitmq", secret));
@@ -216,5 +203,57 @@ namespace LogWire.Controller.Kubernetes.Applications
             ApplicationResources.Add(new ConfigMap(this.Namespace, "rabbitmq", data));
         }
 
+        public RabbitMQApplication(IDataRepository<ConfigurationEntry> repository) : base(repository)
+        {
+
+            _rabbitManagerPass = repository.Get("rabbitmq.management.pass")?.Value;
+            _rabbitGuestPass = repository.Get("rabbitmq.guest.pass")?.Value;
+            _cookie = repository.Get("rabbitmq.cookie")?.Value;
+
+            if (_rabbitGuestPass == null)
+            {
+                _rabbitGuestPass = StringUtils.RandomString(20);
+                repository.Add(new ConfigurationEntry("rabbitmq.guest.pass", _rabbitGuestPass));
+            }
+
+            if (_rabbitManagerPass == null)
+            {
+                _rabbitManagerPass = StringUtils.RandomString(20);
+                repository.Add(new ConfigurationEntry("rabbitmq.management.pass", _rabbitManagerPass));
+            }
+            
+            if(_cookie == null)
+            {
+                _cookie = StringUtils.RandomString(32);
+                repository.Add(new ConfigurationEntry("rabbitmq.cookie", _cookie));
+            }
+
+            ConstructResources();
+
+        }
+
+        // Test Only
+        public RabbitMQApplication()
+        {
+
+            _rabbitManagerPass = "test";
+            _rabbitGuestPass = "test";
+            _cookie = StringUtils.RandomString(32);
+
+            ConstructResources();
+
+        }
+
+        private void ConstructResources()
+        {
+            ConstructConfigMap();
+            ConstructSecret();
+            ConstructServiceAccount();
+            ConstructRole();
+            ConstructRoleBinding();
+            ConstructDiscoveryService();
+            ConstructService();
+            ConstructStatefulSet();
+        }
     }
 }

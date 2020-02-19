@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using k8s;
+using LogWire.Controller.Data.Model;
+using LogWire.Controller.Data.Repository;
 using LogWire.Controller.Kubernetes.Resources;
 using Org.BouncyCastle.Math.EC.Multiplier;
 
@@ -11,18 +13,18 @@ namespace LogWire.Controller.Kubernetes
     {
 
         protected List<KubernetesResource> ApplicationResources = new List<KubernetesResource>();
-        
-        protected KubernetesApplication()
-        {
 
-            ConstructResources();
+        protected KubernetesApplication(IDataRepository<ConfigurationEntry> repository)
+        {
 
         }
 
+        protected KubernetesApplication()
+        {
+            
+        }
+
         protected abstract string Namespace { get; }
-
-
-        protected abstract void ConstructResources();
 
         public async Task Create(k8s.Kubernetes client)
         {

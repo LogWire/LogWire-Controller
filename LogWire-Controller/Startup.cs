@@ -1,7 +1,8 @@
 ﻿using LogWire.Controller.Data.Context;
 using LogWire.Controller.Data.Model;
 using LogWire.Controller.Data.Repository;
-using LogWire.Controller.Services.Grpc;
+using LogWire.Controller.Middleware;
+using LogWire.Controller.Services.API;
 using LogWire.Controller.Services.Hosted;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,7 +22,10 @@ namespace LogWire.Controller
         {
             services.AddDbContext<ConfigurationContext>(opt => opt.UseSqlite(@"Data Source=controller.db;"));
             services.AddScoped<IDataRepository<ConfigurationEntry>, ConfigurationRepository>();
+            
+            services.AddHostedService<CoreManagementService>();
             services.AddHostedService<KubernetesManagementService>();
+            
             services.AddGrpc();
         }
 
@@ -34,10 +38,11 @@ namespace LogWire.Controller
             }
 
             app.UseRouting();
+            app.UseApiTokenAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<ConfigurationService>();
 
                 endpoints.MapGet("/", async context =>
                 {

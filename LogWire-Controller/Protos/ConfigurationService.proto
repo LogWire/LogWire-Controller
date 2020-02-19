@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "LogWire.Controller.Services";
+
+service ConfigurationService {
+	rpc AddConfiguration(ConfigurationMessage) returns (ConfigurationStatusMessage);
+	rpc GetConfigurationValue(ConfigurationKeyMessage) returns (ConfigurationMessage);
+}
+
+message ConfigurationMessage {
+	string Key = 1;
+	string Value = 2;
+}
+
+message ConfigurationKeyMessage {
+	string key = 1;
+}
+
+message ConfigurationStatusMessage {
+	bool successful = 1;
+}

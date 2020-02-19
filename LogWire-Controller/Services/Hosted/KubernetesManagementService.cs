@@ -28,8 +28,10 @@ namespace LogWire.Controller.Services.Hosted
             {
                 var repository = scope.ServiceProvider.GetRequiredService<IDataRepository<ConfigurationEntry>>();
 
-                await _manager.Startup(repository);
+                _manager.Init(repository);
             }
+
+            await _manager.Startup();
 
             Console.WriteLine("Loaded");
 
