@@ -1,8 +1,12 @@
-﻿using LogWire.Controller.Services.Grpc;
+﻿using LogWire.Controller.Data.Context;
+using LogWire.Controller.Data.Model;
+using LogWire.Controller.Data.Repository;
+using LogWire.Controller.Services.Grpc;
 using LogWire.Controller.Services.Hosted;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -15,6 +19,8 @@ namespace LogWire.Controller
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ConfigurationContext>(opt => opt.UseSqlite(@"Data Source=controller.db;"));
+            services.AddScoped<IDataRepository<ConfigurationEntry>, ConfigurationRepository>();
             services.AddHostedService<KubernetesManagementService>();
             services.AddGrpc();
         }

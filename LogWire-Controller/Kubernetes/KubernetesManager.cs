@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using k8s;
+using LogWire.Controller.Data.Model;
+using LogWire.Controller.Data.Repository;
 using LogWire.Controller.Kubernetes.Applications;
 
 namespace LogWire.Controller.Kubernetes
@@ -34,7 +36,7 @@ namespace LogWire.Controller.Kubernetes
         }
 
 
-        public async Task Startup()
+        public async Task Startup(IDataRepository<ConfigurationEntry> repository)
         {
 
             foreach (var kubernetesApplication in Applications)
