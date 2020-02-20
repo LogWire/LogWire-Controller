@@ -1,0 +1,8 @@
+X:\LogWire\Source\Controllers\LogWire-Controller\LogWire-Controller.Client\bin\Debug\netcoreapp3.1\LogWire-Controller.Client.deps.json
+X:\LogWire\Source\Controllers\LogWire-Controller\LogWire-Controller.Client\bin\Debug\netcoreapp3.1\LogWire-Controller.Client.dll
+X:\LogWire\Source\Controllers\LogWire-Controller\LogWire-Controller.Client\obj\Debug\netcoreapp3.1\LogWire-Controller.Client.AssemblyInfoInputs.cache
+X:\LogWire\Source\Controllers\LogWire-Controller\LogWire-Controller.Client\obj\Debug\netcoreapp3.1\LogWire-Controller.Client.AssemblyInfo.cs
+X:\LogWire\Source\Controllers\LogWire-Controller\LogWire-Controller.Client\bin\Debug\netcoreapp3.1\LogWire-Controller.Client.pdb
+X:\LogWire\Source\Controllers\LogWire-Controller\LogWire-Controller.Client\obj\Debug\netcoreapp3.1\LogWire-Controller.Client.dll
+X:\LogWire\Source\Controllers\LogWire-Controller\LogWire-Controller.Client\obj\Debug\netcoreapp3.1\LogWire-Controller.Client.pdb
+X:\LogWire\Source\Controllers\LogWire-Controller\LogWire-Controller.Client\obj\Debug\netcoreapp3.1\LogWire-Controller.Client.csprojAssemblyReference.cache

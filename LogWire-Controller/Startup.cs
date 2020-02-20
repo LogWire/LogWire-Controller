@@ -38,7 +38,8 @@ namespace LogWire.Controller
             }
 
             app.UseRouting();
-            app.UseApiTokenAuthentication();
+
+            app.UseApiTokenAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

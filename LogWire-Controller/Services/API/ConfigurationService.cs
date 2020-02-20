@@ -2,8 +2,6 @@
 using Grpc.Core;
 using LogWire.Controller.Data.Model;
 using LogWire.Controller.Data.Repository;
-using LogWire.Controller.Middleware;
-using Microsoft.AspNetCore.Mvc;
 
 namespace LogWire.Controller.Services.API
 {
@@ -17,17 +15,22 @@ namespace LogWire.Controller.Services.API
             _repository = repository;
         }
 
+
         public override Task<ConfigurationStatusMessage> AddConfiguration(ConfigurationMessage request, ServerCallContext context)
         {
             _repository.Add(new ConfigurationEntry(request.Key, request.Value));
-            return new Task<ConfigurationStatusMessage>(() => new ConfigurationStatusMessage{Successful = true});
+            return Task.FromResult(new ConfigurationStatusMessage{Successful = true});
         }
 
         public override Task<ConfigurationMessage> GetConfigurationValue(ConfigurationKeyMessage request, ServerCallContext context)
         {
 
             var data = _repository.Get(request.Key);
-            var ret = new ConfigurationMessage();
+            var ret = new ConfigurationMessage
+            {
+                Value = "INVALID",
+                Key =  "INVALID"
+            };
 
             if (data != null)
             {
@@ -35,7 +38,7 @@ namespace LogWire.Controller.Services.API
                 ret.Key = data.Key;
             }
             
-            return new Task<ConfigurationMessage>(() => ret);
+            return Task.FromResult(ret);
 
         }
     }

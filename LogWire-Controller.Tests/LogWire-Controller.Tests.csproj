@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LogWire-Controller.Client\LogWire-Controller.Client.csproj" />
     <ProjectReference Include="..\LogWire-Controller\LogWire-Controller.csproj" />
   </ItemGroup>
 

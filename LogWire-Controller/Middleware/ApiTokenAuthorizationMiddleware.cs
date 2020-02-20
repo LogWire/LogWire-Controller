@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace LogWire.Controller.Middleware
 {
-    public class ApiTokenAuthenticationMiddleware
+    public class ApiTokenAuthorizationMiddleware
     {
 
         private readonly RequestDelegate _next;
 
-        public ApiTokenAuthenticationMiddleware(RequestDelegate next)
+        public ApiTokenAuthorizationMiddleware(RequestDelegate next)
         {
             _next = next;
         }
@@ -47,16 +47,16 @@ namespace LogWire.Controller.Middleware
         }
     }
 
-    public static class APITokenAuthenticationMiddlewareExtension
+    public static class APITokenAuthorizationMiddlewareExtension
     {
-        public static IApplicationBuilder UseApiTokenAuthentication(this IApplicationBuilder app)
+        public static IApplicationBuilder UseApiTokenAuthorization(this IApplicationBuilder app)
         {
             if (app == null)
             {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            return app.UseMiddleware<ApiTokenAuthenticationMiddleware>();
+            return app.UseMiddleware<ApiTokenAuthorizationMiddleware>();
         }
     }
 

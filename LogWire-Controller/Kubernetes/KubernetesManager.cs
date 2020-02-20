@@ -25,7 +25,7 @@ namespace LogWire.Controller.Kubernetes
         {
 
             // If debugger is attached use local kube config
-            KubernetesClientConfiguration configuration = !Debugger.IsAttached ? KubernetesClientConfiguration.InClusterConfig() : KubernetesClientConfiguration.BuildDefaultConfig();
+            KubernetesClientConfiguration configuration = KubernetesClientConfiguration.BuildDefaultConfig();//!Debugger.IsAttached ? KubernetesClientConfiguration.InClusterConfig() : KubernetesClientConfiguration.BuildDefaultConfig();
 
             _client = new k8s.Kubernetes(configuration);
 
