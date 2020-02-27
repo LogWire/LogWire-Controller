@@ -5,13 +5,12 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using LogWire.Controller.Services;
 
-
-namespace LogWire.Controller
+namespace LogWire.Controller.Client
 {
     public class ConfigurationApiClient
     {
 
-        public static async System.Threading.Tasks.Task<KeyValuePair<string, string>?> GetConfigurationValueAsync(string endpoint, string key, string token)
+        public static async Task<KeyValuePair<string, string>?> GetConfigurationValueAsync(string endpoint, string key, string token)
         {
 
             var headers = new Metadata();
@@ -27,7 +26,6 @@ namespace LogWire.Controller
 
                 if (!String.IsNullOrWhiteSpace(value?.Value))
                     return new KeyValuePair<string, string>(value.Key, value.Value);
-
 
             }
             catch (Exception)

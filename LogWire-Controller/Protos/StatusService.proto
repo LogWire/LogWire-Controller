@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "LogWire.Controller.Services";
+
+service StatusService {
+	rpc GetSystemStatus(SystemStatusParams) returns (Status);
+}
+
+message SystemStatusParams {}
+
+message Status {
+	StatusEnum Value = 1;
+	string Message = 2;
+}
+
+enum StatusEnum {
+	OK = 0;
+	WARN = 1;
+	ERROR = 2;
+}

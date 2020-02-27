@@ -18,6 +18,9 @@
     <Protobuf Include="..\LogWire-Controller\Protos\ConfigurationService.proto" GrpcServices="Client">
       <Link>Protos\ConfigurationService.proto</Link>
     </Protobuf>
+    <Protobuf Include="..\LogWire-Controller\Protos\StatusService.proto" GrpcServices="Client">
+      <Link>Protos\StatusService.proto</Link>
+    </Protobuf>
   </ItemGroup>
 
 </Project>

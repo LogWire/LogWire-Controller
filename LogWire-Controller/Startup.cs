@@ -22,10 +22,10 @@ namespace LogWire.Controller
         {
             services.AddDbContext<ConfigurationContext>(opt => opt.UseSqlite(@"Data Source=controller.db;"));
             services.AddScoped<IDataRepository<ConfigurationEntry>, ConfigurationRepository>();
-            
-            services.AddHostedService<CoreManagementService>();
-            services.AddHostedService<KubernetesManagementService>();
-            
+
+            services.AddSingleton<ManagementService>();
+            services.AddSingleton<IHostedService, ManagementService>(serviceProvider => serviceProvider.GetService<ManagementService>());
+
             services.AddGrpc();
         }
 
@@ -44,6 +44,7 @@ namespace LogWire.Controller
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<ConfigurationService>();
+                endpoints.MapGrpcService<StatusService>();
 
                 endpoints.MapGet("/", async context =>
                 {

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LogWire.Controller.Data.Model;
 using LogWire.Controller.Data.Repository;
+using LogWire.Controller.Kubernetes;
 using LogWire.Controller.Utils;
 using Microsoft.CSharp.RuntimeBinder;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,26 +14,35 @@ using YamlDotNet.Core.Tokens;
 
 namespace LogWire.Controller.Services.Hosted
 {
-    public class CoreManagementService : IHostedService
+    public class ManagementService : IHostedService
     {
 
         private IServiceScopeFactory _scopeFactory;
 
-        public CoreManagementService(IServiceScopeFactory scopeFactory)
+        private KubernetesManager _kubeManager;
+
+        public ManagementService(IServiceScopeFactory scopeFactory)
         {
             _scopeFactory = scopeFactory;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
-            
-            using(var scope = _scopeFactory.CreateScope())
+
+            SetupApiToken();
+            await SetupKubernetes();
+
+        }
+
+        private void SetupApiToken()
+        {
+            using (var scope = _scopeFactory.CreateScope())
             {
                 var repo = scope.ServiceProvider.GetRequiredService<IDataRepository<ConfigurationEntry>>();
 
                 var token = repo.Get("system.api.token")?.Value;
 
-                if(token == null)
+                if (token == null)
                 {
                     token = Guid.NewGuid().ToString();
                     repo.Add(new ConfigurationEntry("system.api.token", token));
@@ -41,8 +51,21 @@ namespace LogWire.Controller.Services.Hosted
                 ApiToken.Instance.Init(token);
 
             }
+        }
 
-            return Task.CompletedTask;
+        private async Task SetupKubernetes()
+        {
+
+            _kubeManager = KubernetesManager.Instance;
+
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var repository = scope.ServiceProvider.GetRequiredService<IDataRepository<ConfigurationEntry>>();
+
+                _kubeManager.Init(repository);
+            }
+
+            await _kubeManager.Startup();
 
         }
 
@@ -51,6 +74,11 @@ namespace LogWire.Controller.Services.Hosted
             
             return Task.CompletedTask;
 
+        }
+
+        public string GetSystemStatus()
+        {
+            return null;
         }
     }
 }

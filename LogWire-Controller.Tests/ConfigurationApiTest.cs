@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using LogWire.Controller;
+using LogWire.Controller.Client;
 using LogWire.Controller.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
