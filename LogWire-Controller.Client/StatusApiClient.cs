@@ -28,9 +28,9 @@ namespace LogWire.Controller.Client
                     return new KeyValuePair<bool, string>(value.Value == StatusEnum.Ok, value.Message);
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // ignored
+                return new KeyValuePair<bool, string>(false, e.Message);
             }
 
             return new KeyValuePair<bool, string>(false, "System can not communicate with controller");
