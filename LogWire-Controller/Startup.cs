@@ -20,7 +20,7 @@ namespace LogWire.Controller
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(opt => opt.UseMySql("server=localhost;port=3306;database=logwire;uid=lwuser;password=lwpassword"));
+            services.AddDbContext<DataContext>(opt => opt.UseMySql("server=localhost;port=3306;database=lw_controller;uid=lwuser;password=lwpassword"));
             services.AddScoped<IDataRepository<ConfigurationEntry>, ConfigurationRepository>();
             services.AddScoped<IDataRepository<UserEntry>, UserRepository>();
 
