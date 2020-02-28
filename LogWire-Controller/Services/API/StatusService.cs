@@ -26,8 +26,8 @@ namespace LogWire.Controller.Services.API
 
             var ret = new Status
             {
-                Message = message ?? "",
-                Value = message == null ? StatusEnum.Ok : StatusEnum.Error
+                Message = message ?? "[OK] All Working",
+                IsOK = message == null
             };
 
             return Task.FromResult(ret); ;

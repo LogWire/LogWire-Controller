@@ -25,7 +25,7 @@ namespace LogWire.Controller.Client
                 var value = await client.GetSystemStatusAsync(new SystemStatusParams(), headers: headers);
 
                 if (value != null)
-                    return new KeyValuePair<bool, string>(value.Value == StatusEnum.Ok, value.Message);
+                    return new KeyValuePair<bool, string>(value.IsOK, value.Message);
 
             }
             catch (Exception e)

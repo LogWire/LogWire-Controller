@@ -78,7 +78,7 @@ namespace LogWire.Controller.Services.Hosted
 
         public string GetSystemStatus()
         {
-            return null;
+            return "[WARN] Starting Up";
         }
     }
 }
