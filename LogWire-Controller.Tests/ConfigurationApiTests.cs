@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace LogWire_Controller.Tests
 {
     [TestClass]
-    public class ConfigurationApiTest
+    public class ConfigurationApiTests
     {
 
         [TestMethod]

@@ -8,6 +8,7 @@ namespace LogWire.Controller.Utils
     {
 
         private static Random random = new Random();
+
         public static string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -18,6 +19,11 @@ namespace LogWire.Controller.Utils
         public static byte[] ToUTF8(this string s)
         {
             return Encoding.UTF8.GetBytes(s);
+        }
+
+        public static string ToBase64(this byte[] bytes)
+        {
+            return Convert.ToBase64String(bytes);
         }
 
     }

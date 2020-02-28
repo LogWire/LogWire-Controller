@@ -7,19 +7,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LogWire.Controller.Data.Context
 {
-    public class ConfigurationContext : DbContext
+    public class DataContext : DbContext
     {
         public DbSet<ConfigurationEntry> Configuration { get; set; }
+        public DbSet<UserEntry> Users { get; set; }
 
-        public ConfigurationContext(DbContextOptions options)
+        public DataContext(DbContextOptions options)
             : base(options)
         {
             Database.EnsureCreated();
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -30,27 +30,48 @@ namespace LogWire.Controller.Services.Hosted
         {
 
             SetupApiToken();
+            SetupDefaultUser();
             await SetupKubernetes();
+
+        }
+
+        private void SetupDefaultUser()
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var repo = scope.ServiceProvider.GetRequiredService<IDataRepository<UserEntry>>();
+
+            if (!repo.GetAll().Any())
+            {
+                Console.WriteLine("There is no users. Creating default administrator.");
+
+                byte[] paswordSalt = PasswordUtils.CreateSalt();
+
+                repo.Add(new UserEntry
+                {
+                    Username = "administrator",
+                    Password = PasswordUtils.HashPassword("changeme", paswordSalt).ToBase64(),
+                    Salt = paswordSalt.ToBase64()
+                });
+
+            }
 
         }
 
         private void SetupApiToken()
         {
-            using (var scope = _scopeFactory.CreateScope())
+            using var scope = _scopeFactory.CreateScope();
+
+            var repo = scope.ServiceProvider.GetRequiredService<IDataRepository<ConfigurationEntry>>();
+
+            var token = repo.Get("system.api.token")?.Value;
+
+            if (token == null)
             {
-                var repo = scope.ServiceProvider.GetRequiredService<IDataRepository<ConfigurationEntry>>();
-
-                var token = repo.Get("system.api.token")?.Value;
-
-                if (token == null)
-                {
-                    token = Guid.NewGuid().ToString();
-                    repo.Add(new ConfigurationEntry("system.api.token", token));
-                }
-
-                ApiToken.Instance.Init(token);
-
+                token = Guid.NewGuid().ToString();
+                repo.Add(new ConfigurationEntry("system.api.token", token));
             }
+
+            ApiToken.Instance.Init(token);
         }
 
         private async Task SetupKubernetes()

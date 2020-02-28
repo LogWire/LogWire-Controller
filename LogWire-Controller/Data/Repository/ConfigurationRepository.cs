@@ -10,9 +10,9 @@ namespace LogWire.Controller.Data.Repository
     public class ConfigurationRepository : IDataRepository<ConfigurationEntry>
     {
 
-        readonly ConfigurationContext _context;
+        readonly DataContext _context;
 
-        public ConfigurationRepository(ConfigurationContext context)
+        public ConfigurationRepository(DataContext context)
         {
             _context = context;
         }

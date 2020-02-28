@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option csharp_namespace = "LogWire.Controller.Services";
+
+service AuthenticationService {
+	rpc Login(LoginRequestMessage) returns (LoginResponseMessage);
+}
+
+message LoginRequestMessage {
+	string username = 1;
+	string password = 2;
+}
+
+message LoginResponseMessage {
+	string userId = 1;
+}

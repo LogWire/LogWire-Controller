@@ -8,19 +8,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\AuthenticationService.proto" />
     <None Remove="Protos\ConfigurationService.proto" />
     <None Remove="Protos\StatusService.proto" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.24.0" />
+    <PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.2.1" />
     <PackageReference Include="KubernetesClient" Version="1.6.12" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.112" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="Protos\AuthenticationService.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\ConfigurationService.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\StatusService.proto" GrpcServices="Server" />
   </ItemGroup>
