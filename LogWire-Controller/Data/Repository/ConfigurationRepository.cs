@@ -45,5 +45,10 @@ namespace LogWire.Controller.Data.Repository
             _context.Configuration.Remove(entity);
             _context.SaveChanges();
         }
+
+        public IEnumerable<ConfigurationEntry> GetByPrefix(string requestPrefix)
+        {
+            return _context.Configuration.Where(c => c.Key.StartsWith(requestPrefix)).ToList();
+        }
     }
 }

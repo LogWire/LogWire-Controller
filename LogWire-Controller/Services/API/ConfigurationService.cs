@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Google.Protobuf.Collections;
 using Grpc.Core;
 using LogWire.Controller.Data.Model;
 using LogWire.Controller.Data.Repository;
@@ -18,7 +20,16 @@ namespace LogWire.Controller.Services.API
 
         public override Task<ConfigurationStatusMessage> AddConfiguration(ConfigurationMessage request, ServerCallContext context)
         {
-            _repository.Add(new ConfigurationEntry(request.Key, request.Value));
+            var entry = _repository.Get(request.Key);
+            if (entry == null)
+            {
+                _repository.Add(new ConfigurationEntry(request.Key, request.Value));
+            }
+            else
+            {
+                _repository.Update(entry, new ConfigurationEntry(entry.Key, request.Value));
+            }
+            
             return Task.FromResult(new ConfigurationStatusMessage{Successful = true});
         }
 
@@ -38,6 +49,24 @@ namespace LogWire.Controller.Services.API
                 ret.Key = data.Key;
             }
             
+            return Task.FromResult(ret);
+
+        }
+
+        public override Task<ConfigrationListMessage> GetAllConfigurationValuesForPrefix(ConfigurationPrefixMessage request, ServerCallContext context)
+        {
+
+            var repo = _repository as ConfigurationRepository;
+
+            var data = repo.GetByPrefix(request.Prefix);
+
+            var ret = new ConfigrationListMessage();
+
+            foreach (var configurationEntry in data)
+            {
+                ret.ConfigList.Add(configurationEntry.Key, configurationEntry.Value);
+            }
+
             return Task.FromResult(ret);
 
         }

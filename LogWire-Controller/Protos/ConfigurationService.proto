@@ -5,6 +5,7 @@ option csharp_namespace = "LogWire.Controller.Services";
 service ConfigurationService {
 	rpc AddConfiguration(ConfigurationMessage) returns (ConfigurationStatusMessage);
 	rpc GetConfigurationValue(ConfigurationKeyMessage) returns (ConfigurationMessage);
+	rpc GetAllConfigurationValuesForPrefix(ConfigurationPrefixMessage) returns (ConfigrationListMessage);
 }
 
 message ConfigurationMessage {
@@ -18,4 +19,12 @@ message ConfigurationKeyMessage {
 
 message ConfigurationStatusMessage {
 	bool successful = 1;
+}
+
+message ConfigurationPrefixMessage {
+	string Prefix = 1;
+}
+
+message ConfigrationListMessage {
+	map<string,string> ConfigList = 1;
 }
