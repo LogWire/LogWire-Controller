@@ -54,6 +54,18 @@ namespace LogWire.Controller.Kubernetes
 
         public async Task Delete(k8s.Kubernetes client)
         {
+            foreach (var applicationResource in ApplicationResources)
+            {
+                try
+                {
+                    await applicationResource.DeleteResource(client);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+
             await client.DeleteNamespaceAsync(this.Namespace);
         }
 

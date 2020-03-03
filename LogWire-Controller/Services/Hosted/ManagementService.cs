@@ -17,7 +17,7 @@ namespace LogWire.Controller.Services.Hosted
     public class ManagementService : IHostedService
     {
 
-        private IServiceScopeFactory _scopeFactory;
+        private readonly IServiceScopeFactory _scopeFactory;
 
         private KubernetesManager _kubeManager;
 

@@ -32,7 +32,14 @@ namespace LogWire.Controller.Kubernetes.Resources
 
         public override async Task DeleteResource(k8s.Kubernetes client)
         {
-            await client.DeleteNamespacedServiceAccountAsync(_name, _namespace);
+            try
+            {
+                await client.DeleteNamespacedServiceAccountAsync(_name, _namespace);
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         public override async Task<bool> ResourceExists(k8s.Kubernetes client)

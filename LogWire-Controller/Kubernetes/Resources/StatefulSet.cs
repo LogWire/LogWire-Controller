@@ -15,7 +15,7 @@ namespace LogWire.Controller.Kubernetes.Resources
         private readonly string _updateStratType;
         private readonly IDictionary<string, string> _selector;
         private readonly V1PodTemplateSpec _template;
-        private IDictionary<string, string> _labels;
+        private readonly IDictionary<string, string> _labels;
 
         public StatefulSet(string ns, string name, IDictionary<string, string> labels, string serviceName, string podManagementPolicy, int? replicas, string updateStratType, IDictionary<string, string> selector, V1PodTemplateSpec template, IList<V1PersistentVolumeClaim> volumeTemplate)
         {

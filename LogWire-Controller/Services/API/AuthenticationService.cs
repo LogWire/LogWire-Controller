@@ -13,7 +13,7 @@ namespace LogWire.Controller.Services.API
     public class AuthenticationService : Services.AuthenticationService.AuthenticationServiceBase
     {
 
-        private IDataRepository<UserEntry> _repository;
+        private readonly IDataRepository<UserEntry> _repository;
 
         public AuthenticationService(IDataRepository<UserEntry> repository)
         {

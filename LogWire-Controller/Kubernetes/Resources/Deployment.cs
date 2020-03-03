@@ -15,6 +15,8 @@ namespace LogWire.Controller.Kubernetes.Resources
         private readonly Dictionary<string, string> _selectors;
         private readonly string _image;
         private readonly List<V1ContainerPort> _ports;
+        private List<string> _args;
+        private string _serviceAccount;
 
         public Deployment (string ns, string name, Dictionary<string, string> labels, int replicas, Dictionary<string,string> selector, string image, List<V1ContainerPort> ports)
         {
@@ -25,6 +27,18 @@ namespace LogWire.Controller.Kubernetes.Resources
             _selectors = selector;
             _image = image;
             _ports = ports;
+        }
+
+        public Deployment(string ns, string name, Dictionary<string, string> labels, int replicas, Dictionary<string, string> selector, string image, List<string> args, string serviceAccount)
+        {
+            _namespace = ns.ToLower();
+            _name = name.ToLower();
+            _labels = labels;
+            _replicas = replicas;
+            _selectors = selector;
+            _image = image;
+            _args = args;
+            _serviceAccount = serviceAccount;
         }
 
         private V1Deployment GetDeploymentObject()
@@ -45,9 +59,10 @@ namespace LogWire.Controller.Kubernetes.Resources
                             {
                                 Name = _name,
                                 Ports = _ports,
-                                Image = _image
+                                Image = _image,
+                                Args = _args
                             }
-                        })
+                        }, serviceAccountName: _serviceAccount)
                     }
                 }
             };
@@ -61,7 +76,7 @@ namespace LogWire.Controller.Kubernetes.Resources
 
         public override async Task DeleteResource(k8s.Kubernetes client)
         {
-            await client.DeleteNamespacedDeployment1Async(_name, _namespace);
+            await client.DeleteNamespacedDeploymentAsync(_name + "-deployment", _namespace);
         }
 
         public override async Task<bool> ResourceExists(k8s.Kubernetes client)

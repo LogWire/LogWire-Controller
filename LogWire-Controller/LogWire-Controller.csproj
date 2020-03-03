@@ -27,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LogWire-Controller.Client\LogWire-Controller.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Protobuf Include="Protos\AuthenticationService.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\ConfigurationService.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\StatusService.proto" GrpcServices="Server" />

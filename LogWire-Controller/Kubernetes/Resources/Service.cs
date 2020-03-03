@@ -13,7 +13,7 @@ namespace LogWire.Controller.Kubernetes.Resources
         private readonly List<V1ServicePort> _ports;
         private readonly bool _loadbalancer;
         private readonly string _clusterIP;
-        private bool? _publishNotReady;
+        private readonly bool? _publishNotReady;
 
         // Create a ClusterIP Service
         

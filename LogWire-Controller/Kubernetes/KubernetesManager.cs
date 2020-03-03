@@ -17,9 +17,9 @@ namespace LogWire.Controller.Kubernetes
 
         public static KubernetesManager Instance => _instance ??= new KubernetesManager();
         
-        private k8s.Kubernetes _client;
+        private readonly k8s.Kubernetes _client;
 
-        private Dictionary<string, KubernetesApplication> Applications = new Dictionary<string, KubernetesApplication>();
+        private readonly Dictionary<string, KubernetesApplication> Applications = new Dictionary<string, KubernetesApplication>();
 
         public KubernetesManager()
         {
@@ -34,7 +34,6 @@ namespace LogWire.Controller.Kubernetes
         public void Init(IDataRepository<ConfigurationEntry> repository)
         {
             Applications.Add("rabbitmq", new RabbitMQApplication(repository));
-            Applications.Add("elasticsearch", new ElasticSearchApplication(repository));
         }
 
         public async Task Startup()

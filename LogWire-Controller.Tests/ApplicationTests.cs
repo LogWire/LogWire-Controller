@@ -55,40 +55,6 @@ namespace LogWire_Controller.Tests
             await rabbit.Delete(client);
 
         }
-
-        [TestMethod]
-        public async Task ElasticsearchCreateTest()
-        {
-
-            KubernetesClientConfiguration configuration = KubernetesClientConfiguration.BuildDefaultConfig();
-
-            var client = new k8s.Kubernetes(configuration);
-
-            ElasticSearchApplication elasticsearch = new ElasticSearchApplication();
-
-            await elasticsearch.Create(client);
-
-            while (!await elasticsearch.IsReady(client))
-            {
-                Thread.Sleep(500);
-            }
-
-        }
-
-        [TestMethod]
-        public async Task ElasticsearchDeleteTest()
-        {
-
-            KubernetesClientConfiguration configuration = KubernetesClientConfiguration.BuildDefaultConfig();
-
-            var client = new k8s.Kubernetes(configuration);
-
-            ElasticSearchApplication elasticsearch = new ElasticSearchApplication();
-
-            await elasticsearch.Delete(client);
-
-        }
-
     }
 
 }

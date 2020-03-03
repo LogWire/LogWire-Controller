@@ -10,13 +10,12 @@ namespace LogWire.Controller.Services.API
     public class ConfigurationService : Services.ConfigurationService.ConfigurationServiceBase
     {
 
-        private IDataRepository<ConfigurationEntry> _repository;
+        private readonly IDataRepository<ConfigurationEntry> _repository;
 
         public ConfigurationService(IDataRepository<ConfigurationEntry> repository)
         {
             _repository = repository;
         }
-
 
         public override Task<ConfigurationStatusMessage> AddConfiguration(ConfigurationMessage request, ServerCallContext context)
         {

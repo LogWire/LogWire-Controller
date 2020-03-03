@@ -7,7 +7,7 @@ namespace LogWire.Controller.Utils
     public static class StringUtils
     {
 
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
 
         public static string RandomString(int length)
         {

@@ -12,7 +12,7 @@ namespace LogWire.Controller.Services.API
     public class StatusService : Services.StatusService.StatusServiceBase
     {
 
-        private ManagementService _managementService;
+        private readonly ManagementService _managementService;
 
         public StatusService(ManagementService managementService)
         {

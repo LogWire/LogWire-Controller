@@ -23,8 +23,8 @@ namespace LogWire.Controller.Kubernetes.Applications
 
         protected override string Namespace => "rabbit-mq";
         
-        private static Dictionary<string, string> _labels = new Dictionary<string, string> { { "app", "rabbitmq" } };
-        private static List<V1ServicePort> _ports = new List<V1ServicePort> {
+        private static readonly Dictionary<string, string> _labels = new Dictionary<string, string> { { "app", "rabbitmq" } };
+        private static readonly List<V1ServicePort> _ports = new List<V1ServicePort> {
             new V1ServicePort(15672, "http", targetPort: "http"),
             new V1ServicePort(5672, "amqp", targetPort: "amqp"),
             new V1ServicePort(4369, "epmd", targetPort: "epmd")
