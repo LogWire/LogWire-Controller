@@ -6,7 +6,7 @@ using k8s.Models;
 using LogWire.Controller.Kubernetes.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LogWire_Controller.Tests.KubeTests
+namespace LogWire.Controller.Tests.KubeTests
 {
     [TestClass]
     public class KubernetesCreateTests

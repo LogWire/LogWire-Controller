@@ -13,7 +13,7 @@ namespace LogWire.Controller.Data.Context
         public DbSet<ConfigurationEntry> Configuration { get; set; }
         public DbSet<UserEntry> Users { get; set; }
 
-        public DataContext(DbContextOptions options)
+        public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
             Database.EnsureCreated();

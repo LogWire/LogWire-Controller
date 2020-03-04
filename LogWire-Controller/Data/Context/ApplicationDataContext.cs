@@ -12,7 +12,7 @@ namespace LogWire.Controller.Data.Context
 
         public DbSet<ApplicationEntry> Applications { get; set; }
 
-        public ApplicationDataContext(DbContextOptions options)
+        public ApplicationDataContext(DbContextOptions<ApplicationDataContext> options)
             : base(options)
         {
             Database.EnsureCreated();

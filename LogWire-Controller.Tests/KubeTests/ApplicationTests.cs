@@ -3,7 +3,7 @@ using k8s;
 using LogWire.Controller.Kubernetes.Applications;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LogWire_Controller.Tests.KubeTests
+namespace LogWire.Controller.Tests.KubeTests
 {
 
     [TestClass]

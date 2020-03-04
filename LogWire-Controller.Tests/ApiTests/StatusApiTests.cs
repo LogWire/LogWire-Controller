@@ -2,7 +2,7 @@
 using LogWire.Controller.Client.Clients;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LogWire_Controller.Tests.ApiTests
+namespace LogWire.Controller.Tests.ApiTests
 {
     [TestClass]
     public class StatusApiTests
