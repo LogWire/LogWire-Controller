@@ -1,6 +1,8 @@
 ﻿using LogWire.Controller.Data.Context;
 using LogWire.Controller.Data.Model;
+using LogWire.Controller.Data.Model.Application;
 using LogWire.Controller.Data.Repository;
+using LogWire.Controller.Data.Repository.Application;
 using LogWire.Controller.Middleware;
 using LogWire.Controller.Services.API;
 using LogWire.Controller.Services.Hosted;
@@ -21,8 +23,12 @@ namespace LogWire.Controller
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(opt => opt.UseMySql("server=localhost;port=3306;database=lw_controller;uid=lwuser;password=lwpassword"));
+            services.AddDbContext<ApplicationDataContext>(opt => opt.UseMySql("server=localhost;port=3306;database=lw_applications;uid=lwuser;password=lwpassword"));
+
             services.AddScoped<IDataRepository<ConfigurationEntry>, ConfigurationRepository>();
             services.AddScoped<IDataRepository<UserEntry>, UserRepository>();
+
+            services.AddScoped<IDataRepository<ApplicationEntry>, ApplicationRepository>();
 
             services.AddSingleton<ManagementService>();
             services.AddSingleton<IHostedService, ManagementService>(serviceProvider => serviceProvider.GetService<ManagementService>());
@@ -44,9 +50,9 @@ namespace LogWire.Controller
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<ConfigurationService>();
-                endpoints.MapGrpcService<StatusService>();
-                endpoints.MapGrpcService<AuthenticationService>();
+                endpoints.MapGrpcService<ConfigurationServiceServer>();
+                endpoints.MapGrpcService<StatusServiceServer>();
+                endpoints.MapGrpcService<AuthenticationServiceServer>();
 
                 endpoints.MapGet("/", async context =>
                 {

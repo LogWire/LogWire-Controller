@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option csharp_namespace = "LogWire.Controller.Services";
+
+service ApplicationService {
+	rpc Add(AddRequestMessage) returns (AddResponseMessage);
+	rpc List(ListRequestMessage) returns (ListResponseMessage);
+}
+
+message AddRequestMessage {
+	string name = 1;
+}
+
+message AddResponseMessage {
+	string id = 1;
+}
+
+message ListRequestMessage {
+}
+
+message ApplicationListEntry {
+	string id = 1;
+	string name = 2;
+}
+
+message ListResponseMessage {
+	repeated ApplicationListEntry applications = 1;
+}

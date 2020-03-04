@@ -3,11 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using k8s;
 using k8s.Models;
-using LogWire.Controller.Kubernetes.Applications;
 using LogWire.Controller.Kubernetes.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LogWire_Controller.Tests
+namespace LogWire_Controller.Tests.KubeTests
 {
     [TestClass]
     public class KubernetesCreateTests

@@ -10,12 +10,12 @@ using LogWire.Controller.Utils;
 
 namespace LogWire.Controller.Services.API
 {
-    public class AuthenticationService : Services.AuthenticationService.AuthenticationServiceBase
+    public class AuthenticationServiceServer : Services.AuthenticationService.AuthenticationServiceBase
     {
 
         private readonly IDataRepository<UserEntry> _repository;
 
-        public AuthenticationService(IDataRepository<UserEntry> repository)
+        public AuthenticationServiceServer(IDataRepository<UserEntry> repository)
         {
             _repository = repository;
         }

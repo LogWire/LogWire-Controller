@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
 using LogWire.Controller.Services;
 
-namespace LogWire.Controller.Client
+namespace LogWire.Controller.Client.Clients
 {
     public class AuthenticationApiClient
     {

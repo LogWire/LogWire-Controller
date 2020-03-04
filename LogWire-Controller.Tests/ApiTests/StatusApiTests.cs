@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using LogWire.Controller.Client;
+﻿using System.Threading.Tasks;
+using LogWire.Controller.Client.Clients;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LogWire_Controller.Tests
+namespace LogWire_Controller.Tests.ApiTests
 {
     [TestClass]
     public class StatusApiTests

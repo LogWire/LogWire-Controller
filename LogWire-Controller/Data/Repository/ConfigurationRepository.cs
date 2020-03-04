@@ -46,6 +46,11 @@ namespace LogWire.Controller.Data.Repository
             _context.SaveChanges();
         }
 
+        public int Count()
+        {
+            return _context.Configuration.Count();
+        }
+
         public IEnumerable<ConfigurationEntry> GetByPrefix(string requestPrefix)
         {
             return _context.Configuration.Where(c => c.Key.StartsWith(requestPrefix)).ToList();

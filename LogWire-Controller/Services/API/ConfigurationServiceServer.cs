@@ -7,12 +7,12 @@ using LogWire.Controller.Data.Repository;
 
 namespace LogWire.Controller.Services.API
 {
-    public class ConfigurationService : Services.ConfigurationService.ConfigurationServiceBase
+    public class ConfigurationServiceServer : Services.ConfigurationService.ConfigurationServiceBase
     {
 
         private readonly IDataRepository<ConfigurationEntry> _repository;
 
-        public ConfigurationService(IDataRepository<ConfigurationEntry> repository)
+        public ConfigurationServiceServer(IDataRepository<ConfigurationEntry> repository)
         {
             _repository = repository;
         }

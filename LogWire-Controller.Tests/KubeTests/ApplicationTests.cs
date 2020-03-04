@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using k8s;
 using LogWire.Controller.Kubernetes.Applications;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LogWire_Controller.Tests
+namespace LogWire_Controller.Tests.KubeTests
 {
 
     [TestClass]

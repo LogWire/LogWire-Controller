@@ -15,6 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="..\LogWire-Controller\Protos\Application\ApplicationService.proto" GrpcServices="Client">
+      <Link>Protos\ApplicationService.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\LogWire-Controller\Protos\AuthenticationService.proto" GrpcServices="Client">
       <Link>Protos\AuthenticationService.proto</Link>
     </Protobuf>

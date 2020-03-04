@@ -9,12 +9,12 @@ using Microsoft.Extensions.Hosting;
 
 namespace LogWire.Controller.Services.API
 {
-    public class StatusService : Services.StatusService.StatusServiceBase
+    public class StatusServiceServer : Services.StatusService.StatusServiceBase
     {
 
         private readonly ManagementService _managementService;
 
-        public StatusService(ManagementService managementService)
+        public StatusServiceServer(ManagementService managementService)
         {
             _managementService = managementService;
         }

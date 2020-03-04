@@ -50,5 +50,10 @@ namespace LogWire.Controller.Data.Repository
             _context.Users.Remove(entity);
             _context.SaveChanges();
         }
+
+        public int Count()
+        {
+            return _context.Users.Count();
+        }
     }
 }
