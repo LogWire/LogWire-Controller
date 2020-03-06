@@ -4,7 +4,6 @@ using k8s;
 using LogWire.Controller.Data.Model;
 using LogWire.Controller.Data.Repository;
 using LogWire.Controller.Kubernetes.Resources;
-using Org.BouncyCastle.Math.EC.Multiplier;
 
 namespace LogWire.Controller.Kubernetes
 {

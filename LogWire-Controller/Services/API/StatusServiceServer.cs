@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Grpc.Core;
-using LogWire.Controller.Kubernetes;
 using LogWire.Controller.Services.Hosted;
-using Microsoft.Extensions.Hosting;
 
 namespace LogWire.Controller.Services.API
 {

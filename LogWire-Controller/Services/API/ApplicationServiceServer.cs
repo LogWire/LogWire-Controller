@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using LogWire.Controller.Data.Model.Application;
 using LogWire.Controller.Data.Repository;
-using LogWire.Controller.Data.Repository.Application;
 
 namespace LogWire.Controller.Services.API.Application
 {

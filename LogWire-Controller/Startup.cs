@@ -1,10 +1,8 @@
 ﻿using LogWire.Controller.Data.Context;
 using LogWire.Controller.Data.Model;
 using LogWire.Controller.Data.Model.Application;
-using LogWire.Controller.Data.Model.SIEM;
 using LogWire.Controller.Data.Repository;
 using LogWire.Controller.Data.Repository.Application;
-using LogWire.Controller.Data.Repository.SIEM;
 using LogWire.Controller.Middleware;
 using LogWire.Controller.Services.API;
 using LogWire.Controller.Services.API.Application;
@@ -27,14 +25,12 @@ namespace LogWire.Controller
         {
             services.AddDbContext<DataContext>(opt => opt.UseMySql("server=localhost;port=3306;database=lw_controller;uid=lwuser;password=lwpassword"));
             services.AddDbContext<ApplicationDataContext>(opt => opt.UseMySql("server=localhost;port=3306;database=lw_application;uid=lwuser;password=lwpassword"));
-            services.AddDbContext<SIEMDataContext>(opt => opt.UseMySql("server=localhost;port=3306;database=lw_siem;uid=lwuser;password=lwpassword"));
+            
 
             services.AddScoped<IDataRepository<ConfigurationEntry>, ConfigurationRepository>();
             services.AddScoped<IDataRepository<UserEntry>, UserRepository>();
 
             services.AddScoped<IDataRepository<ApplicationEntry>, ApplicationRepository>();
-
-            services.AddScoped<IDataRepository<SIEMUserEntry>, SIEMUserRepository>();
 
             services.AddSingleton<ManagementService>();
             services.AddSingleton<IHostedService, ManagementService>(serviceProvider => serviceProvider.GetService<ManagementService>());
@@ -60,7 +56,6 @@ namespace LogWire.Controller
                 endpoints.MapGrpcService<StatusServiceServer>();
                 endpoints.MapGrpcService<AuthenticationServiceServer>();
                 endpoints.MapGrpcService<ApplicationServiceServer>();
-                endpoints.MapGrpcService<SIEMServiceServer>();
 
                 endpoints.MapGet("/", async context =>
                 {

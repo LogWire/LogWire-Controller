@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LogWire.Controller.Data.Model;
-using LogWire.Controller.Data.Model.Application;
+﻿using LogWire.Controller.Data.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace LogWire.Controller.Data.Context

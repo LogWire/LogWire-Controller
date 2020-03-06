@@ -3,7 +3,6 @@ using System;
 using LogWire.Controller.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LogWire.Controller.Migrations
 {

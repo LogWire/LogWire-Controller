@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Google.Protobuf.Collections;
+﻿using System.Threading.Tasks;
 using Grpc.Core;
 using LogWire.Controller.Data.Model;
 using LogWire.Controller.Data.Repository;
