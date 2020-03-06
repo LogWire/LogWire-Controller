@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option csharp_namespace = "LogWire.Controller.Protos.SIEM";
+
+service SIEMService {
+	rpc GetUserList(.UserListMessage) returns (.UserListResponse);
+	rpc AddUser(.AddUserMessage) returns (.AddUserResposne);
+}
+
+message UserListMessage{
+	int32 pageNumber = 1;
+	int32 resultsPerPage = 2;
+}
+
+message UserListResponse {
+	int32 totalPages = 1;
+	repeated SIEMUser users = 2;
+}
+
+message SIEMUser {
+	string id = 1;
+	string username = 2;
+}
+
+message AddUserResposne {
+	string id = 1;
+}
+
+message AddUserMessage {
+	string username = 1;
+}

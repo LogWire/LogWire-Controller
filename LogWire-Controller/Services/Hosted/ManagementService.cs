@@ -31,7 +31,7 @@ namespace LogWire.Controller.Services.Hosted
 
             SetupApiToken();
             SetupDefaultUser();
-            await SetupKubernetes();
+            //await SetupKubernetes();
 
         }
 

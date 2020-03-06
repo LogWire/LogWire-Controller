@@ -11,6 +11,7 @@
     <None Remove="Protos\ApplicationService.proto" />
     <None Remove="Protos\AuthenticationService.proto" />
     <None Remove="Protos\ConfigurationService.proto" />
+    <None Remove="Protos\SIEMService.proto" />
     <None Remove="Protos\StatusService.proto" />
   </ItemGroup>
 
@@ -31,6 +32,7 @@
     <Protobuf Include="Protos\Application\ApplicationService.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\AuthenticationService.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\ConfigurationService.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\SIEMService.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\StatusService.proto" GrpcServices="Server" />
   </ItemGroup>
 
