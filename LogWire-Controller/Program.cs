@@ -23,6 +23,8 @@ namespace LogWire.Controller
                         builder.AddEnvironmentVariables("lw_");
                     });
 
+                    webBuilder.UseUrls("http://0.0.0.0:5001/");
+
                     webBuilder.UseStartup<Startup>();
 
                 });
